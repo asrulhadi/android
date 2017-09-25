@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hadis1">This is the first hadith</string>
+    <string-array name="hadis">
+        <item>hadis 1</item>
+        <item>hadis 2</item>
+        <item>hadis 3</item>
+    </string-array>
+</resources>
