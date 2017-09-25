@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
     }
 
-    public void tukarBahasa(View v) {
+    public void tukarBahasa2(View v) {
         TextView h = (TextView) findViewById(R.id.hello_world);
         Configuration cfg = getResources().getConfiguration();
         cfg.setLocale(new Locale("ms"));
@@ -31,9 +31,14 @@ public class MainActivity extends AppCompatActivity {
         // get all the array
         String[] ha = getResources().getStringArray(R.array.hadis);
         for ( int i=0 ; i<ha.length; i++ ) {
-            hw += "\n -> " + ha[i];
+            hw += "\n XX7j " + ha[i];
         }
         h.setText(hw);
+    }
+
+    public void tunjukHadis(View v) {
+        Intent intent = new Intent(this, HadisActivity.class);
+        startActivity(intent);
     }
 
     public void shareText(View v) {
