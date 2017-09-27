@@ -8,9 +8,18 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.asrulhadi.localesetting.HadisActivity$PlaceholderFragment">
 
-    <TextView
-        android:id="@+id/section_label"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
+
+        <TextView
+            android:id="@+id/section_label"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Placeholder for hadith"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="24sp"
+            android:typeface="normal" />
+    </ScrollView>
 </RelativeLayout>
