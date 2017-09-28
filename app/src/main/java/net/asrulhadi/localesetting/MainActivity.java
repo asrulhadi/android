@@ -3,16 +3,24 @@ package net.asrulhadi.localesetting;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    private GestureDetector mGestureDetector;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // specifically set the locale
@@ -20,18 +28,77 @@ public class MainActivity extends AppCompatActivity {
         config.setLocale(new Locale("jp"));
         // set the view
         setContentView(R.layout.activity_main);
+
+        // set long press on imageView
+        ImageView img = (ImageView) findViewById(R.id.imageView);
+        img.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Log.d("LocaleSetting","Drpd OnLongClickListener");
+                return ambilGambar();
+            }
+        });
+
+        // setting double click
+        mGestureDetector = new GestureDetector(this, new GestureDetector.SimpleOnGestureListener(){
+            @Override
+            public boolean onDoubleTap(MotionEvent event) {
+                Log.d("LocaleSetting","Drpd SimpleOnGestureListener");
+                System.out.println("Double Table dari Gesture");
+                return ambilGambar();
+            }
+        });
+
+        // also apply to image
+        img.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                return mGestureDetector.onTouchEvent(motionEvent);
+            }
+        });
+
     }
 
-    public void tukarBahasa2(View v) {
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        mGestureDetector.onTouchEvent(event);
+        return super.onTouchEvent(event);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            ImageView img = (ImageView) findViewById(R.id.imageView);
+            img.setImageBitmap(imageBitmap);
+        }
+    }
+
+    private boolean ambilGambar() {
+        // open camera and capture the image
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+        // get the thumbnail
+
+        //File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
+        //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+        //imageUri = Uri.fromFile(photo);
+        return true;
+    }
+
+    public void tukarBahasa(View v) {
         TextView h = (TextView) findViewById(R.id.hello_world);
         Configuration cfg = getResources().getConfiguration();
         cfg.setLocale(new Locale("ms"));
         Context ctx = createConfigurationContext(cfg);
         String hw = ctx.getResources().getString(R.string.hello);
         // get all the array
-        String[] ha = getResources().getStringArray(R.array.hadis);
-        for ( int i=0 ; i<ha.length; i++ ) {
-            hw += "\n XX7j " + ha[i];
+        String[] ha = ctx.getResources().getStringArray(R.array.hadis);
+        for (String hai: ha) {
+            hw += "\n ==> " + hai;
         }
         h.setText(hw);
     }
@@ -42,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void shareText(View v) {
+        tukarBahasa(v);
         String thisText = (String) ((TextView) findViewById(R.id.hello_world)).getText();
         Intent sendIntent = new Intent();
         sendIntent.setAction(Intent.ACTION_SEND);

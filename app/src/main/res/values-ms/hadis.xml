@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hadis1">Ini hadis pertama</string>
+    <string-array name="hadis">
+        <item>Daripada Umar bin Al khattab, katanya: Aku mendengar Rasulullah sollallahu alaihi wasallam bersabda:
+            Sesungguhnya setiap perbuatan itu beserta niat, dan setiap perbuatan individu dinilai berdasarkan apa yang diniatkannya. Maka barangsiapa yang berhijrah kerana Allah dan rasul-Nya, hijrahnya itu akan mendapat pahala hijrah kerana Allah dan rasul-Nya. Dan barangsiapa yang berhijrah kerana mencari imbalan duniawi atau kerana perempuan yang hendak dinikahinya, baginya ganjaran hijrah sesuai dengan apa yang diniatkannya.
+        </item>
+        <item>Daripada Aishah Ummul Mukminin RA katanya:
+            Al-Harith ibn Hisham RA pernah bertanya kepada Rasulullah sollallahu alaihi wasallam, katanya:
+            "Wahai Rasulullah, bagaimanakah cara wahyu diturunkan kepada anda?"
+            Jawab Rasulullah sollallahu alaihi wasallam:
+            Adakalanya (wahyu) itu datang kepadaku seolah-olah bunyi deringan loceng, dan (cara seperti) itulah yang paling berat bagiku. Dan apabila aku mampu mengerti wahyu yang disampaikan, bunyi itu akan berhenti. Adakalanya pula malaikat akan menjelma kepadaku sebagai seorang lelaki, dan dia akan berbicara kepadaku sehinggalah aku mengerti wahyu yang disampaikan.
+            Kata Aisyah RA: Aku pernah melihat wahyu turun kepada Baginda pada satu hari yang amat sejuk. Setelah wahyu itu berhenti turun, aku melihat keringat yang amat banyak membasahi dahi Baginda.
+        </item>
+        <item>Daripada Ibnu Abbas RA, katanya:
+            "Aku telah datang (ke Mina) dengan menaiki keldai betina, dan ketika itu aku hampir baligh. Ketika itu juga Rasulullah sollallahu alaihi wasallam sedang mengimamkan solat di Mina dengan tiada dinding di hadapan baginda. Aku melintasi di hadapan beberapa saf, dan melepaskan ikatan keldai ku untuk ia pergi makan rumput. Lantas aku masuk ke dalam saf dan Rasulullah sollallahu alaihi wasallam tidak menegah perbuatanku itu (melintas di hadapan saf). "
+        </item>
+    </string-array>
 </resources>

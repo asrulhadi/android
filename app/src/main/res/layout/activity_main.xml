@@ -12,18 +12,21 @@
     tools:context="net.asrulhadi.localesetting.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/hello_world"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
         android:text="@string/hello"
-        android:id="@+id/hello_world" />
+        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
 
     <Button
         android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/imageButton"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="63dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentStart="false"
+        android:layout_toEndOf="@+id/hSpace"
         android:onClick="shareText"
         android:text="@string/send_to" />
 
@@ -31,11 +34,30 @@
         android:id="@+id/imageButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="68dp"
-        android:layout_marginStart="63dp"
-        android:onClick="tunjukHadis"
-        app:srcCompat="@mipmap/ic_launcher"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="false"
+        android:layout_centerHorizontal="false"
+        android:layout_toStartOf="@+id/hSpace"
+        android:onClick="tunjukHadis"
+        app:srcCompat="@mipmap/ic_launcher" />
+
+    <Space
+        android:id="@+id/hSpace"
+        android:layout_width="50dp"
+        android:layout_height="10dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/imageButton"
+        android:layout_alignParentStart="false"
+        android:layout_below="@+id/hello_world"
+        android:layout_centerInParent="false"
+        android:cropToPadding="false"
+        android:scaleType="fitXY"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
 </RelativeLayout>

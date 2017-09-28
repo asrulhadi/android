@@ -4,4 +4,6 @@
     <string name="hello">Assalamualaikum Dunia</string>
     <string name="send_to">Kongsi</string>
     <string name="share">Share</string>
+    <string name="translate">Translation</string>
+    <string name="hadis">Hadis</string>
 </resources>
