@@ -1,5 +1,6 @@
 package net.asrulhadi.localesetting;
 
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -53,11 +54,35 @@ public class AyatActivity extends AppCompatActivity {
         ayatView.setText(R.string.ayat);
     }
 
+    private MediaPlayer create(int id) {
+        return MediaPlayer.create(AyatActivity.this, id);
+    }
+
+    private MediaPlayer create(String url) {
+        MediaPlayer p = new MediaPlayer();
+        p.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        try {
+            Log.d("LocaleSetting", "MediaPlayer: setting data source");
+            p.setDataSource(url);
+            Log.d("LocaleSetting", "MediaPlayer: preparing async");
+            p.prepareAsync();
+        } catch (Exception e) {
+            Log.e("LocaleSetting", "Error: " + e);
+            p.release();
+            return null;
+        }
+        Log.d("LocaleSetting", "MediaPlayer: ready to play");
+        return p;
+    }
+
     private void play() {
         String pack = "net.asrulhadi.localesetting";
         // media from https://verses.quran.com/Alafasy/mp3/SSSAAA.mp3
-        int ayatID = getResources().getIdentifier("a00100" + currentAyat, "raw", pack);
-        player = MediaPlayer.create(AyatActivity.this, ayatID);
+        //int audio = getResources().getIdentifier("a00100" + currentAyat, "raw", pack);
+        String audio = "https://verses.quran.com/Alafasy/mp3/00100" + currentAyat + ".mp3";
+        // URL need <uses-permission android:name="android.permission.INTERNET" />
+        player = create(audio);
+
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -75,7 +100,12 @@ public class AyatActivity extends AppCompatActivity {
             }
         });
         Log.d("LocaleSetting", "Media Playing " + currentAyat);
-        player.start();
+        player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mediaPlayer) {
+                mediaPlayer.start();
+            }
+        });
     }
 
     public void releasePlayer() {

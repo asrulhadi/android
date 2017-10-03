@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="tunjuk_ayat">Show Ayat</string>
-    <string name="translate"></string>
+    <string name="translate">Translations</string>
     <string name="terjemahan_dialog_title">Translate to</string>
 </resources>

@@ -5,15 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.FragmentTransaction;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -22,15 +21,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Locale;
 
 public class HadisActivity extends AppCompatActivity implements ActionBar.TabListener {
+    private final static String TERJEMAHAN = "terjemah";
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -53,6 +51,15 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // restore translation
+        if ( savedInstanceState != null ) {
+            translation = savedInstanceState.getString(TERJEMAHAN);
+            Log.d("LocaleSetting", " **** Restoring instance ==> " + translation);
+        } else {
+            translation = "";
+        }
+
         setContentView(R.layout.activity_hadis);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
@@ -99,7 +106,21 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
             }
         };
         mTerjemah.setTerjemahan(new String[] {"Off","English","Bahasa Melayu"}, listener);
-        translation = "";
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // need to put in manifest
+        // android:configChanges="orientation|screenSize"
+        Log.d("LocaleSetting", "New Config " + newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        Log.d("LocaleSetting", " **** Saving Instance ==> " + translation);
+        outState.putString(TERJEMAHAN, translation);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -131,12 +152,16 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
     }
 
     public void showTerjemahanFragment(int id) {
-        String msg = "Perlu tambah terjemahan ";
         switch (id) {
             case 1: translation = "en"; break;
             case 2: translation = "ms"; break;
             default: translation = "";
         }
+        showTerjemahanFragment();
+    }
+
+    public void showTerjemahanFragment() {
+        String msg = "Perlu tambah terjemahan ";
         Toast.makeText(getApplicationContext(), msg + translation, Toast.LENGTH_SHORT).show();
 
         int currentItemNo = mViewPager.getCurrentItem();
@@ -146,12 +171,13 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
         for (Fragment f: getSupportFragmentManager().getFragments()) {
             Log.d("LocaleSetting", "Fragment " + f);
             if ( f.getView() != null ) {
+                boolean visible = "".equals(translation) ? false : true;
                 HadisFragment hf = (HadisFragment)f;
                 LinearLayout mView = (LinearLayout) f.getView();
                 View tView = mView.findViewById(R.id.terjemahan);
                 Log.d("LocaleSetting", "    View " + mView);
                 hf.setTerjemahanText(translation, tView);
-                hf.setTerjemahanVisibility(id!=0, mView);
+                hf.setTerjemahanVisibility(visible, mView);
                 Log.d("LocaleSetting", "Setting for terjemahan " + mView.findViewById(R.id.sv_terjemah));
             }
         }
@@ -215,11 +241,22 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
 
             // get translation
             String translate = ((HadisActivity) getActivity()).translation;
+            /*if (savedInstanceState != null ) {
+                translate = savedInstanceState.getString(TERJEMAHAN);
+                Log.d("LocaleSetting", " **** Restoring from fragment " + translate);
+            }*/
             setTerjemahanText(translate, rootView.findViewById(R.id.terjemahan));
 
             // translation: show or not
             setTerjemahanVisibility(! "".equals(translate), rootView.findViewById(R.id.hadis_layout));
             return rootView;
+        }
+
+        @Override
+        public void onSaveInstanceState(Bundle outState) {
+            String translate = ((HadisActivity) getActivity()).translation;
+            outState.putString(TERJEMAHAN, translate);
+            super.onSaveInstanceState(outState);
         }
 
         private String getLocalized(int index, String locale) {
