@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -105,6 +105,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void tunjukHadis(View v) {
         Intent intent = new Intent(this, HadisActivity.class);
+        startActivity(intent);
+    }
+
+    public void tunjukAyat(View v) {
+        Intent intent = new Intent(this, AyatActivity.class);
         startActivity(intent);
     }
 

@@ -4,6 +4,9 @@
     <string name="hello">Assalamualaikum Dunia</string>
     <string name="send_to">Kongsi</string>
     <string name="share">Share</string>
-    <string name="translate">Translation</string>
+    <string name="translate">Terjemahan</string>
     <string name="hadis">Hadis</string>
+    <string name="tunjuk_ayat">Tunjuk Ayat</string>
+    <string name="terjemahan_dialog_title">Terjemah Kepada</string>
+    <string name="terjemahan_dialog_message">Pilih Terjemahan</string>
 </resources>

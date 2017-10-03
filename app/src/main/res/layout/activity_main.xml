@@ -27,8 +27,8 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:layout_toEndOf="@+id/hSpace"
-        android:onClick="shareText"
-        android:text="@string/send_to" />
+        android:onClick="tunjukAyat"
+        android:text="@string/tunjuk_ayat" />
 
     <ImageButton
         android:id="@+id/imageButton"
