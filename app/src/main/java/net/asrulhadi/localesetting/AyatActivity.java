@@ -61,6 +61,13 @@ public class AyatActivity extends AppCompatActivity {
     private MediaPlayer create(String url) {
         MediaPlayer p = new MediaPlayer();
         p.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        p.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mediaPlayer, int i, int i1) {
+                Log.d("LocaleSetting", "MediaPlayer: Async error : " + i + " " + i1);
+                return false;
+            }
+        });
         try {
             Log.d("LocaleSetting", "MediaPlayer: setting data source");
             p.setDataSource(url);
@@ -76,33 +83,34 @@ public class AyatActivity extends AppCompatActivity {
     }
 
     private void play() {
-        String pack = "net.asrulhadi.localesetting";
+        String pack = getApplicationInfo().packageName; //"net.asrulhadi.localesetting";
         // media from https://verses.quran.com/Alafasy/mp3/SSSAAA.mp3
-        //int audio = getResources().getIdentifier("a00100" + currentAyat, "raw", pack);
-        String audio = "https://verses.quran.com/Alafasy/mp3/00100" + currentAyat + ".mp3";
+        int audio = getResources().getIdentifier("a00100" + currentAyat, "raw", pack);
+        //String audio = "https://verses.quran.com/Alafasy/mp3/00100" + currentAyat + ".mp3";
         // URL need <uses-permission android:name="android.permission.INTERNET" />
         player = create(audio);
+        Log.d("LocaleSetting", "MediaPlayer: creating audio for " + currentAyat);
 
         player.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
-                Log.d("LocaleSetting", "Media onCompletion called");
+                Log.d("LocaleSetting", "MediaPlayer: onCompletion called");
                 AyatActivity.this.player.stop();
                 currentAyat += 1;   // next audio
                 releasePlayer();
                 if ( currentAyat < 8 ) play();
                 else {
-                    Log.d("LocaleSetting", "Media Terminating");
+                    Log.d("LocaleSetting", "MediaPlayer: Terminating");
                     // end of surah
                     AyatActivity.this.fab.setImageResource(android.R.drawable.ic_media_play);
                     currentAyat = 1;
                 }
             }
         });
-        Log.d("LocaleSetting", "Media Playing " + currentAyat);
         player.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mediaPlayer) {
+                Log.d("LocaleSetting", "MediaPlayer: Playing " + currentAyat);
                 mediaPlayer.start();
             }
         });
