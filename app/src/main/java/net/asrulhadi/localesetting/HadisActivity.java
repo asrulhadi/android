@@ -3,6 +3,7 @@ package net.asrulhadi.localesetting;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,8 +17,10 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,7 +60,10 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
             translation = savedInstanceState.getString(TERJEMAHAN);
             Log.d("LocaleSetting", " **** Restoring instance ==> " + translation);
         } else {
-            translation = "";
+            // read from sharedPreference
+            SharedPreferences sp = getSharedPreferences("setting", MODE_PRIVATE);
+            translation = sp.getString("translation","");
+            Log.d("LocaleSetting", " **** Reading preferences ==> " + translation);
         }
 
         setContentView(R.layout.activity_hadis);
@@ -157,6 +163,10 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
             case 2: translation = "ms"; break;
             default: translation = "";
         }
+        // save preference
+        SharedPreferences.Editor editor = getSharedPreferences("setting",MODE_PRIVATE).edit();
+        editor.putString("translation",translation);
+        editor.commit();
         showTerjemahanFragment();
     }
 
@@ -233,6 +243,9 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
             View rootView = inflater.inflate(R.layout.fragment_hadis, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
 
+            // set the context menu
+            registerForContextMenu(textView);
+
             // get the "ori" text
             int sectionNo = getArguments().getInt(ARG_SECTION_NUMBER);
             String sArabic = getLocalized(sectionNo-1, "ar");
@@ -250,6 +263,13 @@ public class HadisActivity extends AppCompatActivity implements ActionBar.TabLis
             // translation: show or not
             setTerjemahanVisibility(! "".equals(translate), rootView.findViewById(R.id.hadis_layout));
             return rootView;
+        }
+
+        @Override
+        public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+            MenuInflater inflater = getActivity().getMenuInflater();
+            inflater.inflate(R.menu.menu_hadis, menu);
         }
 
         @Override

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -14,6 +15,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -24,8 +28,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // specifically set the locale
-        Configuration config = getResources().getConfiguration();
-        config.setLocale(new Locale("jp"));
+        //Configuration config = getResources().getConfiguration();
+        //config.setLocale(new Locale("jp"));
+        getResources().getConfiguration().setLocale(new Locale("ms"));
         // set the view
         setContentView(R.layout.activity_main);
 
@@ -72,6 +77,20 @@ public class MainActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             ImageView img = (ImageView) findViewById(R.id.imageView);
             img.setImageBitmap(imageBitmap);
+            // save to external file
+            try {
+                FileOutputStream fos = new FileOutputStream(new File(
+                        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        "depan.jpg"
+                ));
+                if ( imageBitmap.compress(Bitmap.CompressFormat.JPEG, 50 ,(OutputStream)fos) ) {
+                    Log.d("LocaleSetting", "OK");
+                } else {
+                    Log.e("LocaleSetting", "error");
+                }
+            } catch (Exception e) {
+                Log.e("LocaleSetting","Error: " + e);
+            }
         }
     }
 
@@ -79,10 +98,18 @@ public class MainActivity extends AppCompatActivity {
         // open camera and capture the image
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // get the thumbnail
+            // File photo = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),  "Pic.jpg");
+            //takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
+            //imageUri = Uri.fromFile(photo);
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
         }
-        // get the thumbnail
+        Log.d("LocaleSetting"," *** Internal " + getFilesDir());
+        Log.d("LocaleSetting"," *** External " + getExternalFilesDir(Environment.DIRECTORY_PICTURES));
+        Log.d("LocaleSetting"," *** External " + Environment.getExternalStorageDirectory());
+        Log.d("LocaleSetting"," *** External " + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES));
 
+        // get the thumbnail
         //File photo = new File(Environment.getExternalStorageDirectory(),  "Pic.jpg");
         //intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photo));
         //imageUri = Uri.fromFile(photo);

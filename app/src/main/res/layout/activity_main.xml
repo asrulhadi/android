@@ -27,6 +27,9 @@
         android:layout_alignParentEnd="false"
         android:layout_alignParentStart="false"
         android:layout_toEndOf="@+id/hSpace"
+        android:drawableStart="@android:drawable/btn_plus"
+        android:drawableTint="@android:color/holo_orange_dark"
+        android:drawableTintMode="screen"
         android:onClick="tunjukAyat"
         android:text="@string/tunjuk_ayat" />
 
@@ -38,6 +41,7 @@
         android:layout_alignParentStart="false"
         android:layout_centerHorizontal="false"
         android:layout_toStartOf="@+id/hSpace"
+        android:contentDescription="sss"
         android:onClick="tunjukHadis"
         app:srcCompat="@mipmap/ic_launcher" />
 
